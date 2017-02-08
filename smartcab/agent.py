@@ -9,7 +9,7 @@ class LearningAgent(Agent):
     """ An agent that learns to drive in the Smartcab world.
         This is the object you will be modifying. """ 
 
-    def __init__(self, env, learning=True, epsilon=0.9, alpha=0.30):
+    def __init__(self, env, learning=True, epsilon=1.0, alpha=0.50):
         super(LearningAgent, self).__init__(env)     # Set the agent in the evironment 
         self.planner = RoutePlanner(self.env, self)  # Create a route planner
         self.valid_actions = self.env.valid_actions  # The set of valid actions
@@ -25,7 +25,7 @@ class LearningAgent(Agent):
         ###########
         # Set any additional class parameters as needed
         self.trial_N= 1
-        self.a=0.1
+        self.a=0.05
 
 
     def reset(self, destination=None, testing=False):
@@ -45,12 +45,12 @@ class LearningAgent(Agent):
         if testing is True:
             print "Testing is True"
             self.epsilon = 0
-            self.alphaalpha=0
+            self.alpha=0
         else:
             #print "Testing is Not True"
             self.trial_N+=1
-            self.epsilon= (math.exp(-self.a*self.trial_N))
-            #self.epsilon-=0.05
+            #self.epsilon= (math.exp(-self.a*self.trial_N))
+            self.epsilon-=0.05
             
         return None
 
@@ -82,13 +82,15 @@ class LearningAgent(Agent):
         ## TO DO ##
         ###########
         # Calculate the maximum Q-value of all actions for a given state
+        maxQ= max(self.Q[state].values())
+        """
         if self.learning:
             uniqueValues = set(self.Q[state].values())
             if len(uniqueValues)==4:
                 maxQ = max(self.Q[state].iteritems(), key=operator.itemgetter(1))[0]
             else:
                 maxQ = random.choice(self.Q[state].keys())
-                
+        """        
              
         
         #print "This is MaxQ", maxQ
@@ -135,9 +137,14 @@ class LearningAgent(Agent):
             if random.random()<self.epsilon:
                 action = random.choice(self.valid_actions)
             else:
+                uniqueValues = set(self.Q[state].values())
+                if len(uniqueValues)==4:
+                    maxQ= self.get_maxQ(state)
+                    action = self.Q[state].keys()[self.Q[state].values().index(maxQ)]
+                else:
+                    action = random.choice(self.Q[state].keys())
                 
-                action= self.get_maxQ(state)
-                #print "This is the action from maxQ value", action
+                print "This is the action from maxQ value", action
                 #action = self.Q[state]
         return action
 
@@ -154,7 +161,7 @@ class LearningAgent(Agent):
         #   Use only the learning rate 'alpha' (do not use the discount factor 'gamma')
         
         if self.learning:
-            self.Q[state][action] =+ self.alpha*(reward -self.Q[state][action])
+            self.Q[state][action] =+ (1-self.alpha)*(reward -self.Q[state][action])
         return
 
 
