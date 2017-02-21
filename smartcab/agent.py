@@ -131,10 +131,10 @@ class LearningAgent(Agent):
             else:
                 maxQ=self.get_maxQ(state)
                 all_actions  = [action for action in self.Q[state].keys() if self.Q[state][action]==maxQ]
-                print "All Actions",all_actions
+                #print "All Actions",all_actions
                 action = random.choice(all_actions)                
                 
-                print "This is the action from maxQ value", action
+                #print "This is the action from maxQ value", action
                 #action = self.Q[state]
         return action
 
