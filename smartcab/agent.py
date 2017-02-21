@@ -9,7 +9,7 @@ class LearningAgent(Agent):
     """ An agent that learns to drive in the Smartcab world.
         This is the object you will be modifying. """ 
 
-    def __init__(self, env, learning=True, epsilon=1.0, alpha=0.50):
+    def __init__(self, env, learning=True, epsilon=0.60, alpha=0.70):
         super(LearningAgent, self).__init__(env)     # Set the agent in the evironment 
         self.planner = RoutePlanner(self.env, self)  # Create a route planner
         self.valid_actions = self.env.valid_actions  # The set of valid actions
@@ -25,7 +25,7 @@ class LearningAgent(Agent):
         ###########
         # Set any additional class parameters as needed
         self.trial_N= 1
-        self.a=0.05
+        self.a=0.995
 
 
     def reset(self, destination=None, testing=False):
@@ -49,8 +49,10 @@ class LearningAgent(Agent):
         else:
             #print "Testing is Not True"
             self.trial_N+=1
+            #self.epsilon-=0.05
             #self.epsilon= (math.exp(-self.a*self.trial_N))
-            self.epsilon-=0.05
+            #self.epsilon = (1.0/(self.trial_N*self.trial_N))
+            self.epsilon = self.a**self.trial_N
             
         return None
 
@@ -63,13 +65,14 @@ class LearningAgent(Agent):
         waypoint = self.planner.next_waypoint() # The next waypoint 
         inputs = self.env.sense(self)           # Visual input - intersection light and traffic
         deadline = self.env.get_deadline(self)  # Remaining deadline
-
+        print "These are the inputs",inputs
         ########### 
         ## TO DO ##
         ###########
         # Set 'state' as a tuple of relevant data for the agent   
              
-        state = state = (waypoint,inputs['light'],inputs['oncoming'])
+        state = state = (waypoint,inputs['light'],inputs['oncoming'],inputs['right'],inputs['left'])
+        #state = state = (waypoint,inputs['light'],inputs['oncoming'])        
         #print "This is the state in Build_State", state
         return state
 
@@ -83,18 +86,7 @@ class LearningAgent(Agent):
         ###########
         # Calculate the maximum Q-value of all actions for a given state
         maxQ= max(self.Q[state].values())
-        """
-        if self.learning:
-            uniqueValues = set(self.Q[state].values())
-            if len(uniqueValues)==4:
-                maxQ = max(self.Q[state].iteritems(), key=operator.itemgetter(1))[0]
-            else:
-                maxQ = random.choice(self.Q[state].keys())
-        """        
-             
         
-        #print "This is MaxQ", maxQ
-
         return maxQ 
 
 
@@ -137,12 +129,10 @@ class LearningAgent(Agent):
             if random.random()<self.epsilon:
                 action = random.choice(self.valid_actions)
             else:
-                uniqueValues = set(self.Q[state].values())
-                if len(uniqueValues)==4:
-                    maxQ= self.get_maxQ(state)
-                    action = self.Q[state].keys()[self.Q[state].values().index(maxQ)]
-                else:
-                    action = random.choice(self.Q[state].keys())
+                maxQ=self.get_maxQ(state)
+                all_actions  = [action for action in self.Q[state].keys() if self.Q[state][action]==maxQ]
+                print "All Actions",all_actions
+                action = random.choice(all_actions)                
                 
                 print "This is the action from maxQ value", action
                 #action = self.Q[state]
