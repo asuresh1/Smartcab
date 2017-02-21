@@ -65,7 +65,7 @@ class LearningAgent(Agent):
         waypoint = self.planner.next_waypoint() # The next waypoint 
         inputs = self.env.sense(self)           # Visual input - intersection light and traffic
         deadline = self.env.get_deadline(self)  # Remaining deadline
-        print "These are the inputs",inputs
+        #print "These are the inputs",inputs
         ########### 
         ## TO DO ##
         ###########
