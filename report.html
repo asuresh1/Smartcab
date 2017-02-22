@@ -11813,7 +11813,7 @@ div#notebook {
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[2]:</div>
+<div class="prompt input_prompt">In&nbsp;[1]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython2"><pre><span></span><span class="c1"># Import the visualization code</span>
@@ -11945,7 +11945,7 @@ Run the agent.py file after setting the flags from projects/smartcab folder inst
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[3]:</div>
+<div class="prompt input_prompt">In&nbsp;[2]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython2"><pre><span></span><span class="c1"># Load the &#39;sim_no-learning&#39; log file from the initial simulation results</span>
@@ -13616,9 +13616,9 @@ CoMpSZIkSZIkteL/AZRFVcNqDhuCAAAAAElFTkSuQmCC
 <p>The most relevant features for learning both safety and efficiency are waypoint, light,oncoming traffic direction and the intended direction of travel to the smartcab's left and right.</p>
 <p>Waypoint is relevant for the agent reliability as it tells the agent the correct direction in order to reach the destination.</p>
 <p>The light features red or green indicates the safety feature as it tells the agent to come to halt at the light if it is red and can drive through the traffic light if the light is green.</p>
-<p>The feature oncoming traffic helps the samrtcab agent in making decisions while making a left turn on green light if it needs to give a right of way to the oncoming traffic. The feature oncoming traffic tells the agent whether the oncoming traffic is making a left turn and is going straight ahead.</p>
-<p>As with respect the states input['left'] or input ['right'] this is the intended direction of the vehicle with respect to the samrtcab agent. Based on this input SmartCab agent would take the waypoint if it deems safe or not. This is helpful to the samrtcab agent's safe operation.</p>
-<p>I did not include the dealine feature into the state feature as the SmartCab agent knows the destinationa and it would calculate the shortest path to the destination. Also we do enforce_dealine parameter as true so as to enforce the smartcab to reach the destination.</p>
+<p>The feature oncoming traffic helps the Smartcab agent in making decisions while making a left turn on green light if it needs to give a right of way to the oncoming traffic. The feature oncoming traffic tells the agent whether the oncoming traffic is making a left turn or is going straight ahead.</p>
+<p>The states input['left'] or input ['right'] is the intended direction of travel for a vehicle to the left or right of the Smartcab agent. Based on this input SmartCab agent would take the waypoint if it deems safe or not. This is helpful to the Smartcab agent's safe operation.</p>
+<p>I did not include the deadline feature into the state feature as the SmartCab agent knows the destinationa and it would calculate the shortest path to the destination. Since we do enforce_deadline parameter as true, the deadline feature need not be included into the state as the enforec_deadline parameter enforces the Smartcab agent to reach the destination.</p>
 
 </div>
 </div>
@@ -13652,7 +13652,13 @@ CoMpSZIkSZIkteL/AZRFVcNqDhuCAAAAAElFTkSuQmCC
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p><strong>Answer:</strong></p>
-<p>The three chosen features give us 32 possible combinations of values. These 32 combinations are few with repect to the smartcab agent to learn a policy for each possible states for a reasonable number of training trials.</p>
+<p>The five chosen features give us 512 possible combinations of values.</p>
+<p>Waypoint = 4 (left, right, forward, None)</p>
+<p>Light = 2  (red, green)</p>
+<p>Oncoming = 4 (left, right, forward, none)</p>
+<p>right = 4 (left, right, forward, none)</p>
+<p>left = 4 (left, right, forward, none)</p>
+<p>These 512 combinations are good with repect to the Smartcab agent to learn a policy for each possible states for a reasonable number of training trials.</p>
 
 </div>
 </div>
@@ -13715,7 +13721,7 @@ $$ \epsilon_{t+1} = \epsilon_{t} - 0.05, \hspace{10px}\textrm{for trial number }
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[4]:</div>
+<div class="prompt input_prompt">In&nbsp;[3]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython2"><pre><span></span><span class="c1"># Load the &#39;sim_default-learning&#39; file from the default Q-Learning simulation</span>
@@ -15622,10 +15628,11 @@ kiRJkqROmJiSJEmSJElSJ/4/BuMMG3X5464AAAAASUVORK5CYII=
 <div class="text_cell_render border-box-sizing rendered_html">
 <p><strong>Answer:</strong></p>
 <p>The default Q-Learning agent behaves much better than the agent that does not learn. We have D for safety rating and  Reliability Rating. This is an improvement over the intial driving agent with no learning.</p>
-<p>The smart cab agent took approximatley 20 training trials before testing.</p>
+<p>The Smartcab agent took approximatley 20 training trials before testing.</p>
 <p>We use a the decay function $ \epsilon_{t+1} = \epsilon_{t} - 0.05, \hspace{10px}\textrm{for trial number } t$ and $ \epsilon$ starts at 1.0 and decays by 0.05 for each training trial and hence we get 20 training trials which is seen from the graph.</p>
 <p>The decaying function for $ \epsilon$ is accuratley represented. We see from the blue graph that $ \epsilon$ decreases by 0.05 for each iteration and reached zero for the 20th iteration.</p>
-<p>As the number of training trials increased, the number of bad decisions by the smart cab agent decreased. This indicates that if we increase the number of training trials by using a smaller decrement of 0.01 as compared to the 0.05 decrement we could get more training trails and eventually an improved agent. As $ \epsilon$ decreases the actions are not chosen randomly but is chosen by looking up into the Q table. The actions now are chosen based on the smartcab agent's experience and hence will likely cause less accidents with an increase in the training trials. The average rewards did increase with time.</p>
+<p>As the number of training trials increased, the number of bad decisions by the smart cab agent decreased. This indicates that if we increase the number of training trials by using a smaller decrement of 0.01 as compared to the 0.05 decrement we could get more training trails and eventually an improved agent.</p>
+<p>As $ \epsilon$ decreases the actions are not chosen randomly but is chosen by looking up into the Q table. The actions now are chosen based on the Smartcab agent's experience and hence will likely cause less accidents with an increase in the training trials. The average rewards did increase with time.</p>
 
 </div>
 </div>
@@ -15671,7 +15678,7 @@ $$ \epsilon = a^t, \textrm{for } 0 < a < 1 \hspace{50px}\epsilon = \frac{1}{t^2}
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[22]:</div>
+<div class="prompt input_prompt">In&nbsp;[4]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython2"><pre><span></span><span class="c1"># Load the &#39;sim_improved-learning&#39; file from the improved Q-Learning simulation</span>
@@ -19063,12 +19070,11 @@ JEkaiP8DmOMG7IKKa5wAAAAASUVORK5CYII=
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p><strong>Answer:</strong></p>
-<p>In order to improve the learning agent a differnt decaying function for $ \epsilon$ was used. Below is the decay function used.
-$$ \epsilon = a^t, \textrm{for } 0 < a < 1 \hspace{50px}$$</p>
-<p>I needed about 600 training trials that our smart cab agent needed in order to begin testing.</p>
+<p>In order to improve the learning agent a differnt decaying function for $ \epsilon$ was used. Below is the decay function used.</p>
+$$ \epsilon = a^t, \textrm{for } 0 < a < 1 \hspace{50px}$$<p>I needed about 600 training trials that our smart cab agent needed in order to begin testing.</p>
 <p>I used $ \epsilon= 0.60$, $ tolerance = 0.05$, $a= 0.995$ and for learning rate $ \alpha = 0.7$ in order to get a safety rating of A+ and a Reliability Rating of A. I used different values of $ \epsilon$, tolerance , a and $ \alpha$ and these values that I used gave me A rating for both safety and reliability.</p>
 <p>The Q-learner results does show that the driving agent successfully learned an appropriate policy.</p>
-<p>With an A+ rating for both Safety Rating and Reliability rating I could say that the Smartcab agent has learned well.</p>
+<p>With an A+ rating for both Safety Rating and A for Reliability rating I could say that the Smartcab agent has learned well.</p>
 
 </div>
 </div>
@@ -19105,19 +19111,19 @@ $$ \epsilon = a^t, \textrm{for } 0 < a < 1 \hspace{50px}$$</p>
  -- right : 0.25
  -- None : -1.11
  -- left : 0.20</p>
-<p>The agent state is to take a left turn on a green light with no oncoming traffic. Based on the highest Q-value the smartcab agent takes the right turn. The agent actually needs to make a left turn based on the waypoint.</p>
+<p>The agent state is to take a left turn on a green light with no oncoming traffic. Based on the highest Q-value the Smartcab agent takes the right turn. The agent actually needs to make a left turn based on the waypoint. This is not a good choice by the smartcab agent.</p>
 <p>('right', 'green', None, 'left', 'right')
  -- forward : 0.00
  -- right : 0.16
  -- None : 0.00
  -- left : 0.28</p>
-<p>Here the agent again learns. The agent makes a left turn based on the Q-table, but it could be safe since there is no oncoming traffic but this decision might take the samrtcab agent away from the destination.</p>
+<p>Here the agent again learns. The agent makes a left turn based on the Q-table, but it could be safe since there is no oncoming traffic but this decision might take the Smartcab agent away from the destination.</p>
 <p>('forward', 'green', 'forward', None, 'left')
  -- forward : 0.60
  -- right : -0.09
  -- None : -1.54
  -- left : -4.89</p>
-<p>In this state the smartcab agent went forward, based on the Q-table. The light is green and there is oncoming traffic. This is a safe and reliable decision made by the smartcab agent.</p>
+<p>In this state the Smartcab agent went forward, based on the Q-table. The light is green and there is oncoming traffic. This is a safe and reliable decision made by the Smartcab agent.</p>
 
 </div>
 </div>
