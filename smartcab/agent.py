@@ -71,11 +71,10 @@ class LearningAgent(Agent):
         ###########
         # Set 'state' as a tuple of relevant data for the agent   
              
-<<<<<<< HEAD
+
         state = (waypoint,inputs['light'],inputs['oncoming'],inputs['right'],inputs['left'])
-=======
-        state  = (waypoint,inputs['light'],inputs['oncoming'],inputs['right'],inputs['left'])
->>>>>>> f570382fce8a85169ce0eb475d17bcab30bc1fc8
+
+        
         #state = state = (waypoint,inputs['light'],inputs['oncoming'])        
         #print "This is the state in Build_State", state
         return state
@@ -137,15 +136,10 @@ class LearningAgent(Agent):
                 maxQ=self.get_maxQ(state)
                 all_actions  = [action for action in self.Q[state].keys() if self.Q[state][action]==maxQ]
                 #print "All Actions",all_actions
-<<<<<<< HEAD
                 action = random.choice(all_actions)
-                print "This is the action from maxQ value", action
                 
-=======
-                action = random.choice(all_actions)                
                 
-                #print "This is the action from maxQ value", action
->>>>>>> f570382fce8a85169ce0eb475d17bcab30bc1fc8
+
                 #action = self.Q[state]
         return action
 
