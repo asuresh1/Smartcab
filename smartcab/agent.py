@@ -8,7 +8,7 @@ class LearningAgent(Agent):
     """ An agent that learns to drive in the Smartcab world.
         This is the object you will be modifying. """ 
 
-    def __init__(self, env, learning=True, epsilon=0.6, alpha=0.55):
+    def __init__(self, env, learning=True, epsilon=0.60, alpha=0.70):
         super(LearningAgent, self).__init__(env)     # Set the agent in the evironment 
         self.planner = RoutePlanner(self.env, self)  # Create a route planner
         self.valid_actions = self.env.valid_actions  # The set of valid actions
@@ -24,7 +24,7 @@ class LearningAgent(Agent):
         ###########
         # Set any additional class parameters as needed
         self.trial_N= 1
-        self.a=0.0025
+        self.a=0.005
 
 
     def reset(self, destination=None, testing=False):
@@ -72,10 +72,10 @@ class LearningAgent(Agent):
         # Set 'state' as a tuple of relevant data for the agent   
              
 
-        state = (waypoint,inputs['light'],inputs['oncoming'],inputs['right'],inputs['left'])
+        #state = (waypoint,inputs['light'],inputs['oncoming'],inputs['right'],inputs['left'])
 
         
-        #state = state = (waypoint,inputs['light'],inputs['oncoming'])        
+        state = state = (waypoint,inputs['light'],inputs['oncoming'])        
         #print "This is the state in Build_State", state
         return state
 
@@ -156,7 +156,8 @@ class LearningAgent(Agent):
         #   Use only the learning rate 'alpha' (do not use the discount factor 'gamma')
         
         if self.learning:
-            self.Q[state][action] =+ (1-self.alpha)*(reward -self.Q[state][action])
+            #self.Q[state][action] =+ (1-self.alpha)*(reward -self.Q[state][action])
+            self.Q[state][action] = (1-self.alpha)*self.Q[state][action]+ self.alpha*reward
         return
 
 
